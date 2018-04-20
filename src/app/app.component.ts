@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WasmService } from './wasm.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  constructor(private wasm: WasmService) {}
+
+  ngOnInit() {
+    console.log('comp');
+    this.wasm.fibonacci(43).subscribe(value => {
+      console.log(value);
+    });
+  }
 }
