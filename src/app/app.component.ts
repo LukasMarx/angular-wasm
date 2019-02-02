@@ -10,7 +10,10 @@ export class AppComponent {
   constructor(private wasm: WasmService) {}
 
   ngOnInit() {
-    console.log('comp');
+    this.calcFibonacci();
+  }
+
+  calcFibonacci() {
     this.wasm.fibonacci(43).subscribe(value => {
       console.log(value);
     });

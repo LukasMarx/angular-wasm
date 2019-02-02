@@ -9,6 +9,12 @@
 # dependencies
 /node_modules
 
+yarn-error.log
+
+# wasm
+/wasm/*.js
+/wasm/*.wasm
+
 # IDEs and editors
 /.idea
 .project
