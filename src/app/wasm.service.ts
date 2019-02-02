@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
-import { filter, mergeMap } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 
 import * as Module from "./../../wasm/fibonacci.js";
 import "!!file-loader?name=wasm/fibonacci.wasm!../../wasm/fibonacci.wasm";
@@ -36,17 +36,11 @@ export class WasmService {
     this.module = Module(moduleArgs);
   }
 
-  public fibonacci(input: number) {
-    return this.wasmReady.pipe(
-      filter(value => value === true),
-      mergeMap(
-        () =>
-          new Observable(observer => {
-            const result = this.module._fibonacci(input);
-            observer.next(result);
-            observer.complete();
-          })
-      )
+  public fibonacci(input: number): Observable<number> {
+    return this.wasmReady.pipe(filter(value => value === true)).pipe(
+      map(() => {
+        return this.module._fibonacci(input);
+      })
     );
   }
 }
