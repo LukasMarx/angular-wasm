@@ -1,27 +1,30 @@
-# AngularWasm
+![image](https://malcoded.com/v1/api/asset/angular-web-assembly.webp)
+# Using Web Assembly to speed up your Angular Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.0.
+For some applications, JavaScript just isn't fast enough...
 
-## Development server
+But there is hope!
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Web Assembly is faster than JavaScript and can run in the most popular browsers today!
 
-## Code scaffolding
+In this tutorial, we are going to take a look at Web Assembly in angular. 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+We will discover how we can compile any C program into Web Assembly and the use inside of a simple angular service to speed things up!
 
-## Build
+Ready?
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Let's get started!
 
-## Running unit tests
+[Read the full article on malcoded.com](https://malcoded.com/posts/web-assembly-angular)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Building WASM
 
-## Running end-to-end tests
+```
+emcc wasm/fibonacci.c -Os -s WASM=1 -s MODULARIZE=1 -o wasm/fibonacci.js
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Starting the Angular app
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+yarn start
+```
