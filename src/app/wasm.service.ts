@@ -1,14 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { Subject } from 'rxjs/Subject';
-import { filter, take, mergeMap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { Observable, BehaviorSubject } from "rxjs";
+import { filter, mergeMap } from "rxjs/operators";
 
-import * as Module from './../../wasm/fibonacci.js';
-import '!!file-loader?name=wasm/fibonacci.wasm!../../wasm/fibonacci.wasm';
-
-declare var WebAssembly;
+import * as Module from "./../../wasm/fibonacci.js";
+import "!!file-loader?name=wasm/fibonacci.wasm!../../wasm/fibonacci.wasm";
 
 @Injectable()
 export class WasmService {
@@ -17,7 +12,7 @@ export class WasmService {
   wasmReady = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    this.instantiateWasm('wasm/fibonacci.wasm');
+    this.instantiateWasm("wasm/fibonacci.wasm");
   }
 
   private async instantiateWasm(url: string) {
@@ -41,19 +36,17 @@ export class WasmService {
     this.module = Module(moduleArgs);
   }
 
-  public fibonacci(input: number): Observable<number> {
-    return this.wasmReady.pipe(filter(value => value === true)).pipe(
-      mergeMap(() => {
-        return fromPromise(
-          new Promise<number>((resolve, reject) => {
-            setTimeout(() => {
-              const result = this.module._fibonacci(input);
-              resolve(result);
-            });
+  public fibonacci(input: number) {
+    return this.wasmReady.pipe(
+      filter(value => value === true),
+      mergeMap(
+        () =>
+          new Observable(observer => {
+            const result = this.module._fibonacci(input);
+            observer.next(result);
+            observer.complete();
           })
-        );
-      }),
-      take(1)
+      )
     );
   }
 }
